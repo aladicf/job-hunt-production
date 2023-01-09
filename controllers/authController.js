@@ -8,6 +8,9 @@ const register = async (req, res) => {
 	if (!name || !email || !password) {
 		throw new BadRequestError('please provide all values')
 	}
+	 if (password.length < 8) {
+        throw new BadRequestError('Password must be at least 8 characters')
+        } 
 	const userAlreadyExists = await User.findOne({ email })
 	if (userAlreadyExists) {
 		throw new BadRequestError('Email already in use')
