@@ -2,7 +2,7 @@
 
 Hoested on Render.
 
-Please note that the app is hosted on the free tier which means after 15 minutes of server inactivity app will go into sleep mode which might require first request to take between 10-30 seconds to spin back up the server, please be patient as this happens.
+Please note that the app is hosted on the free tier which means after 15 minutes of server inactivity app will go into sleep mode which might require first request to take between 10-30 seconds to spin up the server, please be patient as this happens.
 
 With following pages:
 
