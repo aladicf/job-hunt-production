@@ -127,6 +127,10 @@ const AppProvider = ({ children }) => {
 				})
 				return
 			}
+			dispatch({
+				type: SETUP_USER_ERROR,
+				payload: { msg: error.response.data.msg },
+			})
 		}
 		clearAlert()
 	}
