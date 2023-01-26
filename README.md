@@ -4,6 +4,8 @@ Hosted on Render.
 
 App is deployed on the Europe/Frankfurt server, which may cause some add-on time for requests outside Europe.
 
+Automated monitors to optimize and reduce cold starts.
+
 With following pages:
 
 Landing page.
