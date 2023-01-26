@@ -6,8 +6,8 @@ const ProtectedRoute = ({ children }) => {
 
 	if (userLoading)
 		return (
-			<div className='loading-center'>
-				<Loading />
+			<div>
+				<Loading center />
 			</div>
 		)
 
