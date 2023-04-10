@@ -2,22 +2,9 @@ import User from '../models/User.js'
 import { StatusCodes } from 'http-status-codes'
 import { BadRequestError, UnAuthenticatedError } from '../errors/index.js'
 import attachCookie from '../utils/attachCookie.js'
-
-const validateFields = (name, email, password,) => {
-    if (!name || !email || !password) {
-        throw new BadRequestError('Please provide all values')
-    }
-
-    // Validate email format
-    const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-    if (!emailRegex.test(email)) {
-        throw new BadRequestError('Invalid email format')
-    }
-
-    if (password.length < 8) {
-        throw new BadRequestError('Password must be at least 8 characters')
-    }
-}
+import validateRegisterFields from '../utils/validateRegister.js'
+import validateLoginFields from '../utils/validateLogin.js'
+import validateUpdateFields from '../utils/validateUpdate.js'
 
 const emailAlreadyInUse = async (userId, email) => {
     const user = await User.findOne({ _id: { $ne: userId }, email: { $regex: new RegExp(`^${email}$`, 'i') } })
@@ -27,7 +14,7 @@ const emailAlreadyInUse = async (userId, email) => {
 const register = async (req, res) => {
     const { body: { name, email, password } } = req
 
-    validateFields(name, email, password)
+    validateRegisterFields(name, email, password)
 
     if (await emailAlreadyInUse(null, email)) {
     throw new BadRequestError('Email already in use')
@@ -51,8 +38,8 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
     const { body: { email, password } } = req
-
-    validateFields(null, email, password)
+    
+    validateLoginFields(email, password)
 
     const user = await User.findOne({ email: { $regex: new RegExp(`^${email}$`, 'i') } }).select('+password')
     if (!user) {
@@ -75,11 +62,7 @@ const updateUser = async (req, res) => {
 	
     const { body: { email, name, lastName, location }, user: { userId } } = req
 
-    validateFields(name, email, null)
-
-    if (name.trim() === '' || lastName.trim() === '' || location.trim() === '') {
-        throw new BadRequestError('Name, lastName and location cannot be empty')
-    }
+    validateUpdateFields(name, email, lastName, location )
 
     if (await emailAlreadyInUse(userId, email)) {
         throw new BadRequestError('Email already in use')
