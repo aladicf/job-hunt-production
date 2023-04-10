@@ -2,20 +2,38 @@ import User from '../models/User.js'
 import { StatusCodes } from 'http-status-codes'
 import { BadRequestError, UnAuthenticatedError } from '../errors/index.js'
 import attachCookie from '../utils/attachCookie.js'
-const register = async (req, res) => {
-	const { name, email, password } = req.body
 
-	if (!name || !email || !password) {
-		throw new BadRequestError('please provide all values')
-	}
-	 if (password.length < 8) {
+const validateFields = (name, email, password,) => {
+    if (!name || !email || !password) {
+        throw new BadRequestError('Please provide all values')
+    }
+
+    // Validate email format
+    const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    if (!emailRegex.test(email)) {
+        throw new BadRequestError('Invalid email format')
+    }
+
+    if (password.length < 8) {
         throw new BadRequestError('Password must be at least 8 characters')
-        } 
-	const userAlreadyExists = await User.findOne({ email })
-	if (userAlreadyExists) {
-		throw new BadRequestError('Email already in use')
-	}
-	const user = await User.create({ name, email, password })
+    }
+}
+
+const emailAlreadyInUse = async (userId, email) => {
+    const user = await User.findOne({ _id: { $ne: userId }, email: { $regex: new RegExp(`^${email}$`, 'i') } })
+    return !!user
+}
+
+const register = async (req, res) => {
+    const { body: { name, email, password } } = req
+
+    validateFields(name, email, password)
+
+    if (await emailAlreadyInUse(null, email)) {
+    throw new BadRequestError('Email already in use')
+}
+
+    const user = await User.create({ name, email, password })
 
 	const token = user.createJWT()
 	attachCookie({ res, token })
@@ -30,45 +48,61 @@ const register = async (req, res) => {
 		location: user.location,
 	})
 }
+
 const login = async (req, res) => {
-	const { email, password } = req.body
-	if (!email || !password) {
-		throw new BadRequestError('Please provide all values')
-	}
-	const user = await User.findOne({ email }).select('+password')
-	if (!user) {
-		throw new UnAuthenticatedError('Invalid Credentials')
-	}
+    const { body: { email, password } } = req
 
-	const isPasswordCorrect = await user.comparePassword(password)
-	if (!isPasswordCorrect) {
-		throw new UnAuthenticatedError('Invalid Credentials')
-	}
-	const token = user.createJWT()
+    validateFields(null, email, password)
 
-	user.password = undefined
-	attachCookie({ res, token })
+    const user = await User.findOne({ email: { $regex: new RegExp(`^${email}$`, 'i') } }).select('+password')
+    if (!user) {
+        throw new UnAuthenticatedError('Invalid Credentials')
+    }
 
-	res.status(StatusCodes.OK).json({ user, location: user.location })
+    const isPasswordCorrect = await user.comparePassword(password)
+    if (!isPasswordCorrect) {
+        throw new UnAuthenticatedError('Invalid Credentials')
+    }
+    const token = user.createJWT()
+
+    user.password = undefined
+    attachCookie({ res, token })
+
+    res.status(StatusCodes.OK).json({ user, location: user.location })
 }
+
 const updateUser = async (req, res) => {
-	const { email, name, lastName, location } = req.body
-	if (!email || !name || !lastName || !location) {
-		throw new BadRequestError('Please provide all values')
-	}
-	const user = await User.findOne({ _id: req.user.userId })
+	
+    const { body: { email, name, lastName, location }, user: { userId } } = req
 
-	user.email = email
-	user.name = name
-	user.lastName = lastName
-	user.location = location
+    validateFields(name, email, null)
 
-	await user.save()
+    if (name.trim() === '' || lastName.trim() === '' || location.trim() === '') {
+        throw new BadRequestError('Name, lastName and location cannot be empty')
+    }
 
-	const token = user.createJWT()
-	attachCookie({ res, token })
+    if (await emailAlreadyInUse(userId, email)) {
+        throw new BadRequestError('Email already in use')
+    }
 
-	res.status(StatusCodes.OK).json({ user, location: user.location })
+    const user = await User.findOne({ _id: userId })
+
+    // Check if the user is only updating their own information
+    if (userId !== req.user.userId) {
+        throw new UnauthorizedError('You are not authorized to update this information')
+    }
+
+    user.email = email
+    user.name = name
+    user.lastName = lastName
+    user.location = location
+
+    await user.save()
+
+    const token = user.createJWT()
+    attachCookie({ res, token })
+
+    res.status(StatusCodes.OK).json({ user, location: user.location })
 }
 
 const getCurrentUser = async (req, res) => {
