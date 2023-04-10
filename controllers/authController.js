@@ -50,6 +50,7 @@ const login = async (req, res) => {
     if (!isPasswordCorrect) {
         throw new UnAuthenticatedError('Invalid Credentials')
     }
+
     const token = user.createJWT()
 
     user.password = undefined
