@@ -6,7 +6,7 @@ import rateLimiter from 'express-rate-limit'
 
 const apiRateLimiter = rateLimiter({
 	windowMs: 15 * 60 * 1000, // 15 minutes
-	max: 3,
+	max: 5,
 	message: 'Too many failed login attempts, please try again in 15 minutes',
 })
 
