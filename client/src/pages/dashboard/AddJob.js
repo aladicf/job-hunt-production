@@ -33,11 +33,9 @@ const AddJob = () => {
 		}
 		createJob()
 	}
-	const handleJobInput = (e) => {
-		const name = e.target.name
-		const value = e.target.value
-		handleChange({ name, value })
-	}
+		const handleJobInput = ({ target: { name, value } }) => {
+  			handleChange({ name, value });
+		}
 
 	return (
 		<Wrapper>
