@@ -14,11 +14,9 @@ const ProtectedRoute = ({ children }) => {
 				<Loading center />
 			</div>
 		)
-	{/* If user is not defined, redirect to /landing route */ }
 	if (!user) {
 		return <Navigate to='/landing' />
 	}
-	{/* If user is defined, render children */ }
 	return children
 }
 
