@@ -2,7 +2,7 @@
 import { BadRequestError } from '../errors/index.js'
 
 // Defining a function to validate the login fields
-const validateLoginFields = (email, password,) => {
+const validateLoginFields = (email, password) => {
     // Checking if all values are provided
     if (!email || !password) {
         // Throwing an error if any value is missing
