@@ -40,23 +40,32 @@ const UserSchema = new mongoose.Schema({
 	},
 })
 
+// Defining a pre-save hook for the UserSchema
 UserSchema.pre('save', async function () {
-	if (!this.isModified('password')) return
+    // Checking if the password field has been modified
+    if (!this.isModified('password')) return
 
-	const salt = await bcrypt.genSalt(10)
+    // Generating a salt for hashing the password
+    const salt = await bcrypt.genSalt(10)
 
-	this.password = await bcrypt.hash(this.password, salt)
+    // Hashing the password using the generated salt
+    this.password = await bcrypt.hash(this.password, salt)
 })
 
+// Defining a method to create a JSON Web Token (JWT) for a user
 UserSchema.methods.createJWT = function () {
-	return jwt.sign({ userId: this._id }, process.env.JWT_SECRET, {
-		expiresIn: process.env.JWT_LIFETIME,
-	})
+    // Signing the JWT with the user's id and the secret key
+    return jwt.sign({ userId: this._id }, process.env.JWT_SECRET, {
+        // Setting the expiration time of the JWT
+        expiresIn: process.env.JWT_LIFETIME,
+    })
 }
 
+// Defining a method to compare a candidate password with the user's password
 UserSchema.methods.comparePassword = async function (candidatePassword) {
-	const isMatch = await bcrypt.compare(candidatePassword, this.password)
-	return isMatch
+    // Comparing the candidate password with the user's password using bcrypt
+    const isMatch = await bcrypt.compare(candidatePassword, this.password)
+    return isMatch
 }
 
 export default mongoose.model('User', UserSchema)
