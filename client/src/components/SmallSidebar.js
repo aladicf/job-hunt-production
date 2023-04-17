@@ -4,11 +4,14 @@ import { useAppContext } from '../context/appContext'
 import NavLinks from './NavLinks'
 import Logo from './Logo'
 
+// Define a functional component called SmallSidebar
 const SmallSidebar = () => {
+	// Destructure values from the useAppContext hook
 	const { showSidebar, toggleSidebar } = useAppContext()
 
 	return (
 		<Wrapper>
+			// Define a div element with a class of 'sidebar-container' and an additional class of 'show-sidebar' if showSidebar is true
 			<div
 				className={
 					showSidebar ? 'sidebar-container show-sidebar' : 'sidebar-container'
