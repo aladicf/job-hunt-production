@@ -93,7 +93,7 @@ const updateUser = async (req, res) => {
     validateUpdateFields(name, email, lastName, location )
 
     // Check if the provided email is already in use by another user
-    if (await emailAlreadyInUse(userId, email)) {
+    if (await emailAlreadyInUse(email)) {
         // If the email is already in use, throw an error
         throw new BadRequestError('Email already in use')
     }
