@@ -2,7 +2,6 @@ import { FaChartBar } from 'react-icons/fa'
 import { FaRegListAlt } from 'react-icons/fa'
 import { FaRegPlusSquare } from 'react-icons/fa'
 import { FaUserCog } from 'react-icons/fa'
-ks */}
 
 const links = [
     
