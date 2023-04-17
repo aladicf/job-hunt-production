@@ -53,5 +53,6 @@ const PageBtnContainer = () => {
 				<FaArrowRight />
 			</button>
 		</Wrapper>
+)
 
 export default PageBtnContainer
