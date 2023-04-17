@@ -46,6 +46,7 @@ const SearchContainer = () => {
 	}
 
 	// Use useMemo to create a memoized version of the debounce function called optimizedDebounce
+	// eslint-disable-next-line
 	const optimizedDebounce = useMemo(() => debounce(), [])
 
 	return (
