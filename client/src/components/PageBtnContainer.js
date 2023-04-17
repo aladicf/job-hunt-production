@@ -27,7 +27,6 @@ const PageBtnContainer = () => {
 		}
 		changePage(newPage)
 	}
-
 	return (
 		<Wrapper>
 			<button className='prev-btn' onClick={prevPage}>
