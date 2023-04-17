@@ -35,7 +35,7 @@ const StatsContainer = () => {
 
 	return (
 		<Wrapper>
-			// Map over defaultStats array and for each item return a StatItem component with props spread from item object and key set to index
+			{/* Map over defaultStats array and for each item return a StatItem component with props spread from item object and key set to index */ }
 			{defaultStats.map((item, index) => {
 				return <StatItem key={index} {...item} />
 			})}
