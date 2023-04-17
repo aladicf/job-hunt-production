@@ -11,7 +11,7 @@ const SmallSidebar = () => {
 
 	return (
 		<Wrapper>
-			// Define a div element with a class of 'sidebar-container' and an additional class of 'show-sidebar' if showSidebar is true
+			{/* Define a div element with a class of 'sidebar-container' and an additional class of 'show-sidebar' if showSidebar is true */ }
 			<div
 				className={
 					showSidebar ? 'sidebar-container show-sidebar' : 'sidebar-container'
