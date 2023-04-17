@@ -18,7 +18,7 @@ function App() {
                 <Route
                     path='/'
                     element={
-                        // Use a ProtectedRoute component to only allow access to authenticated users
+			{/* Use a ProtectedRoute component to only allow access to authenticated users */}
                         <ProtectedRoute>
                             {/* Render a SharedLayout component within the ProtectedRoute */}
                             <SharedLayout />
