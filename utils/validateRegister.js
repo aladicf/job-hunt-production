@@ -2,7 +2,7 @@
 import { BadRequestError } from '../errors/index.js'
 
 // Defining a function to validate the registration fields
-const validateRegisterFields = (name, email, password,) => {
+const validateRegisterFields = (name, email, password) => {
     // Checking if all values are provided
     if (!name || !email || !password) {
         // Throwing an error if any value is missing
