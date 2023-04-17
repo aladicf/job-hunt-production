@@ -4,7 +4,7 @@ import { FaRegPlusSquare } from 'react-icons/fa'
 import { FaUserCog } from 'react-icons/fa'
 
 {/* Define an array of objects named links */}
-{/*  */ }
+
 const links = [
 	{/* Each object in the array represents a link */}
     
