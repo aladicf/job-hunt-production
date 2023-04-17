@@ -8,9 +8,7 @@ const NavLinks = ({ toggleSidebar }) => {
 		<div className='nav-links'>
 			{/* Map over the links array and render a NavLink component for each link */}
 			{links.map((link) => {
-				{/* Destructure text, path, id and icon from the link object */}
 				const { text, path, id, icon } = link
-				{/* Return a NavLink component with specified to, key, onClick and className props */}
 				return (
 					<NavLink
 						to={path}
