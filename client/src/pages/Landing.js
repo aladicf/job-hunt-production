@@ -10,6 +10,7 @@ const Landing = () => {
 	const { user } = useAppContext()
 	return (
 		<React.Fragment>
+			{/* If user is defined, redirect to root route */}
 			{user && <Navigate to='/' />}
 			<Wrapper>
 				<nav>
