@@ -27,18 +27,14 @@ const PageBtnContainer = () => {
 		}
 		changePage(newPage)
 	}
-	// Return a Wrapper component
+
 	return (
 		<Wrapper>
-			{/* Render a button element with specified className and onClick props */}
 			<button className='prev-btn' onClick={prevPage}>
-				{/* Render a FaArrowLeft component */}
 				<FaArrowLeft />
 				prev
 			</button>
-			{/* Render a div element with a className of btn-container */}
 			<div className='btn-container'>
-				{/* Map over the pages array and render a button element for each page number */}
 				{pages.map((pageNumber) => {
 					return (
 						<button
@@ -52,10 +48,8 @@ const PageBtnContainer = () => {
 					)
 				})}
 			</div>
-			{/* Render a button element with specified className and onClick props */}
 			<button className='next-btn' onClick={nextPage}>
 				next
-				{/* Render a FaArrowRight component */}
 				<FaArrowRight />
 			</button>
 		</Wrapper>
