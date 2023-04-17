@@ -2,8 +2,12 @@ import { FormRow, FormRowSelect } from '.'
 import { useAppContext } from '../context/appContext'
 import Wrapper from '../assets/wrappers/SearchContainer'
 import { useState, useMemo } from 'react'
+
+// Define a functional component called SearchContainer
 const SearchContainer = () => {
+	// Define a state variable called search and a function to update it called setSearch
 	const [search, setSearch] = useState('')
+	// Destructure values from the useAppContext hook
 	const {
 		isLoading,
 		searchStatus,
@@ -16,28 +20,32 @@ const SearchContainer = () => {
 		statusOptions,
 	} = useAppContext()
 
+	// Define a function called handleSearch that takes an event as an argument
 	const handleSearch = (e) => {
+		// Call the handleChange function with an object containing the name and value of the event target
 		handleChange({ name: e.target.name, value: e.target.value })
 	}
 
+	// Define a function called handleSubmit that takes an event as an argument
 	const handleSubmit = (e) => {
-		e.preventDefault()
-		setSearch('')
-		clearFilters()
+		e.preventDefault() // Prevent the default form submission behavior
+		setSearch('') // Reset the search state variable to an empty string
+		clearFilters() // Call the clearFilters function
 	}
 
+	// Define a function called debounce
 	const debounce = () => {
-		let timeoutID
-		return (e) => {
-			setSearch(e.target.value)
-			clearTimeout(timeoutID)
-			timeoutID = setTimeout(() => {
-				handleChange({ name: e.target.name, value: e.target.value })
+		let timeoutID // Declare a variable called timeoutID
+		return (e) => { // Return a function that takes an event as an argument
+			setSearch(e.target.value) // Update the search state variable with the value of the event target
+			clearTimeout(timeoutID) // Clear any existing timeout
+			timeoutID = setTimeout(() => { // Set a new timeout and assign its ID to the timeoutID variable
+				handleChange({ name: e.target.name, value: e.target.value }) // Call the handleChange function with an object containing the name and value of the event target after 1 second (1000 milliseconds)
 			}, 1000)
 		}
 	}
 
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+	// Use useMemo to create a memoized version of the debounce function called optimizedDebounce
 	const optimizedDebounce = useMemo(() => debounce(), [])
 
 	return (
@@ -45,7 +53,7 @@ const SearchContainer = () => {
 			<form className='form'>
 				<h4>search form</h4>
 				<div className='form-center'>
-					{/* search position */}
+					{/* Add a FormRow component for searching by position */}
 
 					<FormRow
 						type='text'
@@ -53,7 +61,7 @@ const SearchContainer = () => {
 						value={search}
 						handleChange={optimizedDebounce}
 					/>
-					{/* search by status */}
+					{/* Add a FormRowSelect component for searching by status */}
 					<FormRowSelect
 						labelText='status'
 						name='searchStatus'
@@ -61,7 +69,7 @@ const SearchContainer = () => {
 						handleChange={handleSearch}
 						list={['all', ...statusOptions]}
 					/>
-					{/* search by type */}
+					{/* Add a FormRowSelect component for searching by type */}
 					<FormRowSelect
 						labelText='type'
 						name='searchType'
@@ -69,7 +77,7 @@ const SearchContainer = () => {
 						handleChange={handleSearch}
 						list={['all', ...jobTypeOptions]}
 					/>
-					{/* sort */}
+					{/* Add a FormRowSelect component for sorting results */}
 					<FormRowSelect
 						name='sort'
 						value={sort}
