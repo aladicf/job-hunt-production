@@ -17,4 +17,4 @@ const validateUpdateFields = (name, email, lastName, location) => {
     }
 }
 
-export default validateUpdateFieldselds
+export default validateUpdateFields
