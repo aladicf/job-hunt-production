@@ -6,11 +6,11 @@ import validateRegisterFields from '../utils/validateRegister.js'
 import validateLoginFields from '../utils/validateLogin.js'
 import validateUpdateFields from '../utils/validateUpdate.js'
 
-// Define an asynchronous emailAlreadyInUse function that takes an email as a parameter
-const emailAlreadyInUse = async (email) => {
-  // Use the User.findOne method to find a user in the database with an email that matches the provided email (case-insensitive)
+// Define an asynchronous emailAlreadyInUse function that takes a userId and an email as parameters
+const emailAlreadyInUse = async (userId, email) => {
+  // Use the User.findOne method to find a user in the database with an email that matches the provided email (case-insensitive) and a different userId
   // The $regex operator is used to perform a case-insensitive match by specifying the 'i' option
-  const user = await User.findOne({ email: { $regex: new RegExp(`^${email}$`, 'i') } })
+  const user = await User.findOne({ _id: { $ne: userId }, email: { $regex: new RegExp(`^${email}$`, 'i') } })
   // Return true if a user is found and false otherwise
   // The !! operator is used to convert the user object to a boolean value
   return !!user
@@ -25,11 +25,10 @@ const register = async (req, res) => {
   validateRegisterFields(name, email, password)
 
   // Call the emailAlreadyInUse function to check if the provided email is already in use by another user
-  if (await emailAlreadyInUse(email)) {
+  if (await emailAlreadyInUse(null, email)) {
     // If the email is already in use, throw a BadRequestError with a custom error message
     throw new BadRequestError('Email already in use')
   }
-
   // Use the User.create method to create a new user in the database with the provided data
   const user = await User.create({ name, email, password })
 
@@ -93,7 +92,7 @@ const updateUser = async (req, res) => {
     validateUpdateFields(name, email, lastName, location )
 
     // Check if the provided email is already in use by another user
-    if (await emailAlreadyInUse(email)) {
+   if (await emailAlreadyInUse(userId, email)) {
         // If the email is already in use, throw an error
         throw new BadRequestError('Email already in use')
     }
