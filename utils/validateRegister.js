@@ -16,10 +16,16 @@ const validateRegisterFields = (name, email, password,) => {
         throw new BadRequestError('Invalid email format')
     }
 
-    // Checking if the password is at least 8 characters long
+     // Check if the password is at least 8 characters long
     if (password.length < 8) {
-        // Throwing an error if the password is too short
+        // If the password is too short, throw an error
         throw new BadRequestError('Password must be at least 8 characters')
+    }
+
+    // Check if the password contains at least one uppercase letter, one lowercase letter, and one number
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/.test(password)) {
+        // If the password does not meet these requirements, throw an error
+        throw new BadRequestError('Password must contain at least one uppercase letter, one lowercase letter, and one number')
     }
 }
 
