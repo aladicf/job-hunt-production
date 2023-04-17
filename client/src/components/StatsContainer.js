@@ -8,7 +8,8 @@ import Wrapper from '../assets/wrappers/StatsContainer'
 const StatsContainer = () => {
 	// Destructure values from the useAppContext hook
 	const { stats } = useAppContext()
-
+	
+		const defaultStats = [
 	// Define an array of objects called defaultStats
 		{
 			title: 'pending applications',
