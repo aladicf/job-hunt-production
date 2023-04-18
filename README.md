@@ -1,7 +1,5 @@
 # Job Hunt, the job tracker app built with MERN stack ( MongoDB, Express.js, React.js, Node.js ) & styled-components.
 
-Automated monitors to optimize and reduce cold starts.
-
 With following pages:
 
 Landing page.
@@ -50,6 +48,7 @@ Editing User Profile - This functionality is restricted for the test user accoun
 
 App Security - Express.js headers protection, XSS protection, MongoDB injection protection, Rate Limiting for the Login page.
 
+Automated monitors to optimize and reduce cold starts.
 
 
 
